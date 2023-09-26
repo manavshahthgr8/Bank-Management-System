@@ -4,18 +4,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class Signup3 extends JFrame implements ActionListener {
+    JRadioButton r1,r2,r3,r4;
+    JCheckBox c1,c2,c3,c4,c5,c6;
+    JButton s,c;
+    String formno;
     Signup3(String formno){
         super("Application form");
 
-        JRadioButton r1,r2,r3,r4;
-        JCheckBox c1,c2,c3,c4,c5,c6;
-        JButton s,c;
-       // String formno;
 
 
-       // this.formno = formno;
+
+        this.formno = formno;
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icon/bank.png"));
         Image i2 = i1.getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
@@ -187,6 +189,60 @@ public class Signup3 extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String atype = null;
+        if (r1.isSelected()){
+            atype = "Saving Account";
+        } else if (r2.isSelected()) {
+            atype ="Fixed Deposit Account";
+        }else if (r3.isSelected()){
+            atype ="Current Account";
+        }else if (r4.isSelected()){
+            atype = "Recurring Deposit Account";
+        }
+
+        Random ran = new Random();  // to give card no & pin
+        long first7 = (ran.nextLong() % 90000000L) + 1409963000000000L;
+        String cardno = "" + Math.abs(first7);
+
+        long first3 = (ran.nextLong() % 9000L)+ 1000L;
+        String pin = "" + Math.abs(first3);
+
+        String fac = "";
+        if(c1.isSelected()){
+            fac = fac+"ATM CARD ";
+        } if (c2.isSelected()) {
+            fac = fac+"Internet Banking";
+        } if (c3.isSelected()) {
+            fac = fac+"Mobile Banking";
+        } if (c4.isSelected()) {
+            fac = fac+"EMAIL Alerts";
+        } if (c5.isSelected()) {
+            fac=fac+"Cheque Book";
+        } if (c6.isSelected()) {
+            fac=fac+"E-Statement";
+        }
+
+        try {
+            if (e.getSource()==s){
+                if (atype.equals("")){
+                    JOptionPane.showMessageDialog(null,"Fill all the fields");
+                }else {
+                    connect c1 = new connect();
+                    String q1 = "insert into signupthree values('"+formno+"', '"+atype+"','"+cardno+"','"+pin+"','"+fac+"')";
+                    String q2 = "insert into login values('"+formno+"','"+cardno+"','"+pin+"')";
+                    c1.statement.executeUpdate(q1);
+                    c1.statement.executeUpdate(q2);
+                    JOptionPane.showMessageDialog(null,"Card Number : "+cardno+"\n Pin : "+pin );
+                   // new Deposit(pin);
+                   // setVisible(false);
+                }
+            } else if (e.getSource()==c) {
+                System.exit(0);
+            }
+
+        }catch (Exception E){
+            E.printStackTrace();
+        }
 
     }
 

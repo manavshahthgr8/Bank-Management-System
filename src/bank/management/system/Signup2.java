@@ -180,43 +180,46 @@ public class Signup2 extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//        String rel = (String) comboBox.getSelectedItem();
-//        String cate = (String) comboBox2.getSelectedItem();
-//        String inc = (String) comboBox3.getSelectedItem();
-//        String edu = (String) comboBox4.getSelectedItem();
-//        String occ = (String) comboBox5.getSelectedItem();
-//
-//        String pan = textPan.getText();
-//        String addhar = textAadhar.getText();
-//
-//        String scitizen = " ";
-//        if ((r1.isSelected())){
-//            scitizen = "Yes";
-//        } else if (r2.isSelected()) {
-//            scitizen ="No";
-//        }
-//        String eAccount = " ";
-//        if ((r1.isSelected())){
-//            eAccount = "Yes";
-//        } else if (r2.isSelected()) {
-//            eAccount ="No";
-//        }
-//
-//        try{
-//            if (textPan.getText().equals("") || textAadhar.getText().equals("")){
-//                JOptionPane.showMessageDialog(null,"Fill all the fields");
-//            }else {
-//                Connn c = new Connn();
-//                String q = "insert into Signuptwo values('"+formno+"', '"+rel+"', '"+cate+"','"+inc+"','"+edu+"','"+occ+"','"+pan+"','"+addhar+"','"+scitizen+"','"+eAccount+"')";
-//                c.statement.executeUpdate(q);
-//                new Signup3(formno);
-//                setVisible(false);
-//            }
-//
-//
-//        }catch (Exception E){
-//            E.printStackTrace();
-//        }
+        //Like in previous : values ko nikalke string me store than usko fir sql me bhejenge
+        String rel = (String) comboBox.getSelectedItem();
+        String cate = (String) comboBox2.getSelectedItem();
+        String inc = (String) comboBox3.getSelectedItem();
+        String edu = (String) comboBox4.getSelectedItem();
+        String occ = (String) comboBox5.getSelectedItem();
+
+        String pan = textPan.getText();
+        String addhar = textAadhar.getText();
+
+        String scitizen = " ";
+        if ((r1.isSelected())){
+            scitizen = "Yes";
+        } else if (r2.isSelected()) {
+            scitizen ="No";
+        }
+        String eAccount = " ";
+        if ((r1.isSelected())){
+            eAccount = "Yes";
+        } else if (r2.isSelected()) {
+            eAccount ="No";
+        }
+
+        //next page jab tab adhar and pan dala hi ho
+        try{
+            if (textPan.getText().equals("") || textAadhar.getText().equals("")){
+                JOptionPane.showMessageDialog(null,"Fill all the fields");
+            }else {
+
+                connect c1 = new connect();
+                String q = "insert into Signuptwo values('"+formno+"', '"+rel+"', '"+cate+"','"+inc+"','"+edu+"','"+occ+"','"+pan+"','"+addhar+"','"+scitizen+"','"+eAccount+"')";
+                c1.statement.executeUpdate(q); //since java execute line by line so if upar nachi chala than new form bhi nahin khulega
+                new Signup3(formno); //naya form khola
+                setVisible(false); //isko band kara
+            }
+
+
+        }catch (Exception E){
+            E.printStackTrace();
+        }
 
 
     }
