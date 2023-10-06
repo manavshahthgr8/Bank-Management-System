@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 //step 3making frame via extending jframe  & step 8 : jo dikhaya use kam karane ke liye action listner
 public class Login extends JFrame implements ActionListener {
@@ -112,6 +113,26 @@ public class Login extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             if(e.getSource()==button1){
+                if (e.getSource()==button1) {
+                    if(textField2.getText().equals("")|| passwordField3.getText().equals("")){
+                        JOptionPane.showMessageDialog(null,"Please enter some value");
+                    }else{
+                        connect c = new connect();
+                        String cardno = textField2.getText();
+                        String pin = passwordField3.getText();
+                        String q = "select * from login where card_number = '" + cardno + "' and  pin = '" + pin + "'";
+                        ResultSet resultSet = c.statement.executeQuery(q); // this is at end of project and this time its not ipdate its execute
+                        //Stored value in result set
+                        //now checking if data aya ki nahi in result set
+                        if(resultSet.next()){
+                            setVisible(false);
+                            new main_Class(pin);
+                        }else {
+                            JOptionPane.showMessageDialog(null,"User not found try again");
+                        }
+
+                    }
+                }
 
             } else if (e.getSource()==button2) {  //clear
                 textField2.setText("");

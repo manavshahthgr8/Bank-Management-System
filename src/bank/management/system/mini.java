@@ -1,4 +1,14 @@
 package bank.management.system;
 
-public class mini {
+import javax.swing.*;
+
+public class mini extends JFrame {
+    String pin;
+    mini(String pin){
+        this.pin=pin;
+
+    }
+    public static void main(String[] args) {
+
+    }
 }
