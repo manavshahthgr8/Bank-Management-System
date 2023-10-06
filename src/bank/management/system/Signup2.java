@@ -11,7 +11,7 @@ public class Signup2 extends JFrame implements ActionListener {
     JRadioButton r1,r2,e1,e2;
     JButton next;
     String formno;//declaring globally
-    Signup2(String first){//reciving form no from page 1
+    Signup2(String formno){//reciving form no from page 1
 
         super("Application form");
 
@@ -158,8 +158,8 @@ public class Signup2 extends JFrame implements ActionListener {
         add(l12);
 
         JLabel l13 = new JLabel(formno);
-        l13.setFont(new Font("Raleway", Font.BOLD,14));
-        l13.setBounds(760,10,60,30);
+        l13.setFont(new Font("Raleway", Font.BOLD,12));
+        l13.setBounds(780,10,60,30);
         add(l13);
 
         next = new JButton("Next");

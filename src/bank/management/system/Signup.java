@@ -232,7 +232,7 @@ public class Signup extends JFrame implements ActionListener {
                 connect con1 = new connect();
                 String q = "insert into signup values('"+formno+"','"+name+"','"+fname+"','"+dob+"','"+gender+"','"+email+"','"+martial+"','"+address+"','"+city+"','"+pincode+"','"+state+"' )"; //query
                 con1.statement.executeUpdate(q); //jo query usse execute | update -> for insert  | ja table se nikalana ho ExecuteUpdate use nahi karenege
-                new Signup2(first);//passing form no in next page
+                new Signup2(formno);//passing form no in next page
                 setVisible(false);
             }
         }catch(Exception E){
