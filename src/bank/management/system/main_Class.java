@@ -9,6 +9,7 @@ import java.beans.JavaBean;
 public class main_Class extends JFrame implements ActionListener {
     JButton b1,b2,b3,b4,b5,b6,b7;
     String pin;
+    String cardno;
     main_Class(String pin){
         this.pin = pin;
 
@@ -86,7 +87,7 @@ public class main_Class extends JFrame implements ActionListener {
             new Deposit(pin);
             setVisible(false);
         }else if (e.getSource()==b7){
-            System.exit(0);
+            System.exit(0);  //to close code as set visible just hide
         } else if (e.getSource()==b2) {
             new Withdrawl(pin);
             setVisible(false);
