@@ -42,3 +42,20 @@ JOIN signuptwo st ON s.form_no = st.form_no
 JOIN login l ON s.form_no = l.form_no;
 
 SELECT * FROM UserPersonalInfo;
+
+/*Empoyee view side details*/
+create table admin (user varchar(20),pass varchar(20));
+insert into admin values ("admin123" , "password123");
+Select*from admin;
+
+create table login_time (user varchar(20),time varchar(50),action varchar(20));
+Select*from login_time;
+
+
+CREATE VIEW unregistered AS
+SELECT s.name, s.email, s.address, s.city, s.state, st.occupation, st.education ,st.income
+FROM signup s
+LEFT JOIN signuptwo st ON s.form_no = st.form_no
+WHERE s.form_no NOT IN (SELECT form_no FROM signupthree);
+
+select*from unregistered;
