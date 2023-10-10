@@ -9,9 +9,11 @@ import java.util.Date;
 
 public class FastCash  extends JFrame implements ActionListener {
     String pin;
+    String cardno;
     JButton b1,b2,b3,b4,b5,b6,b7;
-    FastCash(String pin){
+    FastCash(String pin , String cardno){
         this.pin=pin;
+        this.cardno = cardno;
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icon/atm2.png"));
         Image i2 = i1.getImage().getScaledInstance(1380,685,Image.SCALE_DEFAULT);
@@ -76,14 +78,14 @@ public class FastCash  extends JFrame implements ActionListener {
         l3.add(b7);
 
         setLayout(null);
-        setSize(1550,1080);
+        setSize(1380,725);
         setLocation(0,0);
         setVisible(true);
 
 
     }
     public static void main(String[] args) {
-        new FastCash("");
+        new FastCash("" , "");
 
     }
 
@@ -91,13 +93,13 @@ public class FastCash  extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==b7) {
             setVisible(false);
-            new main_Class(pin);
+            new main_Class(pin , cardno);
         }else {
             String amount = ((JButton)e.getSource()).getText().substring(4);
             connect c = new connect();
             Date date = new Date();
             try{
-                ResultSet resultSet = c.statement.executeQuery("select * from bank where pin = '"+pin+"'");
+                ResultSet resultSet = c.statement.executeQuery("select * from bank where cardno = '" + cardno + "' and  pin = '" + pin + "'");
                 int balance =0;
                 while (resultSet.next()){
                     if (resultSet.getString("type").equals("Deposit")){
@@ -112,13 +114,13 @@ public class FastCash  extends JFrame implements ActionListener {
                     return;
                 }
 
-                c.statement.executeUpdate("insert into bank values('"+pin+"','"+date+"', 'withdrawl', '"+amount+"')");
+                c.statement.executeUpdate("insert into bank values('"+pin+"','"+date+"', 'withdrawl', '"+amount+"','"+cardno+"')");
                 JOptionPane.showMessageDialog(null, "Rs. "+amount+" Debited Successfully");
             }catch (Exception E){
                 E.printStackTrace();
             }
             setVisible(false);
-            new main_Class(pin);
+            new main_Class(pin ,cardno);
         }
     }
 }

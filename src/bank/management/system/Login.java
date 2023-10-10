@@ -104,8 +104,9 @@ public class Login extends JFrame implements ActionListener {
         //making front view step 4
         setSize(850,480);
         setLocation(450,200);//making frame open from centere of screen
-        setVisible(true); //making frame visible // always in last lines
         setUndecorated(true);//hide cross , minimize etc from frame
+        setVisible(true); //making frame visible // always in last lines
+
 
     }
 
@@ -127,7 +128,7 @@ public class Login extends JFrame implements ActionListener {
                         //now checking if data aya ki nahi in result set
                         if(resultSet.next()){
                             setVisible(false);
-                            new main_Class(pin);
+                            new main_Class(pin,cardno);
                         }else {
                             JOptionPane.showMessageDialog(null,"User not found try again");
                         }

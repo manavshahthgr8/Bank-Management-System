@@ -9,12 +9,14 @@ import java.util.Date;
 
 public class Withdrawl extends JFrame implements ActionListener {
     String pin;
+    String cardno;
     TextField textField;
 
     JButton b1, b2;
 
-    Withdrawl(String pin){
+    Withdrawl(String pin , String cardno){
         this.pin=pin;
+        this.cardno=cardno;
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icon/atm2.png"));
         Image i2 = i1.getImage().getScaledInstance(1380,685,Image.SCALE_DEFAULT);
@@ -66,7 +68,7 @@ public class Withdrawl extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Withdrawl("");
+        new Withdrawl("" , "");
 
     }
 
@@ -76,11 +78,11 @@ public class Withdrawl extends JFrame implements ActionListener {
             try {
                 String amount = textField.getText();  //storing entered amount
                 Date date = new Date();   //storing date for statement
-                if (textField.getText().equals("")) {   //if amount empty than popping error
+                if (textField.getText().equals("")) {   //if amount emptier than popping error
                     JOptionPane.showMessageDialog(null, "Please enter the Amount you want to withdraw");
                 } else {
                     connect c = new connect();  //making connection to data of that user via pin
-                    ResultSet resultSet = c.statement.executeQuery("select * from bank where pin = '" + pin + "'");
+                    ResultSet resultSet = c.statement.executeQuery("select * from bank where cardno = '" + cardno + "' and  pin = '" + pin + "'");
                     int balance = 0;  // creating variable to fetch balance from database
                     while (resultSet.next()) { //to check if data base se aya and store hua ki nahi
                         if (resultSet.getString("type").equals("Deposit")) {  //column name match karenge
@@ -94,10 +96,10 @@ public class Withdrawl extends JFrame implements ActionListener {
                         return;
                     }
 
-                    c.statement.executeUpdate("insert into bank values('" + pin + "', '" + date + "', 'Withdrawl', '" + amount + "' )");
+                    c.statement.executeUpdate("insert into bank values('" + pin + "', '" + date + "', 'Withdrawl', '" + amount + "','"+cardno+"' )");
                     JOptionPane.showMessageDialog(null, "Rs. " + amount + " Debited Successfully");
                     setVisible(false);
-                    new main_Class(pin);
+                    new main_Class(pin , cardno);
 
                 }
             } catch (Exception E) {
@@ -105,7 +107,7 @@ public class Withdrawl extends JFrame implements ActionListener {
             }
         } else if (e.getSource()==b2) {
             setVisible(false);
-            new main_Class(pin);
+            new main_Class(pin , cardno);
         }
 
     }

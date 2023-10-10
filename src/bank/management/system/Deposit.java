@@ -8,10 +8,11 @@ import java.util.Date;
 
 public class Deposit extends JFrame implements ActionListener {
     String pin;
+    String cardno;
     TextField textField;
 
     JButton b1, b2;
-    Deposit(String pin) {
+    Deposit(String pin , String cardno) {
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icon/atm2.png"));
         Image i2 = i1.getImage().getScaledInstance(1380,685,Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
@@ -47,6 +48,7 @@ public class Deposit extends JFrame implements ActionListener {
         l3.add(b2);
 
         this.pin = pin;
+        this.cardno=cardno;
         setLayout(null);
         setSize(1380, 725);
         setLocation(0, 0);
@@ -62,14 +64,14 @@ public class Deposit extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null,"Please enter the Amount you want to Deposit");
                 }else {
                     connect c = new connect();
-                    c.statement.executeUpdate("insert into bank values('"+pin+"', '"+date+"','Deposit', '"+amount+"')");
+                    c.statement.executeUpdate("insert into bank values('"+pin+"', '"+date+"','Deposit', '"+amount+"','"+cardno+"')");
                     JOptionPane.showMessageDialog(null,"Rs. "+amount+" Deposited Successfully");
                     setVisible(false);
-                   new main_Class(pin);
+                   new main_Class(pin , cardno);
                 }
             }else if (e.getSource()==b2){
                 setVisible(false);
-                new main_Class(pin);
+                new main_Class(pin , cardno);
             }
         }catch (Exception E){
             E.printStackTrace();
@@ -78,7 +80,7 @@ public class Deposit extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Deposit("");
+        new Deposit("","");
 
     }
 

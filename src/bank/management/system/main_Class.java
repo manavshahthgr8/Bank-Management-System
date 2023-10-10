@@ -10,8 +10,9 @@ public class main_Class extends JFrame implements ActionListener {
     JButton b1,b2,b3,b4,b5,b6,b7;
     String pin;
     String cardno;
-    main_Class(String pin){
+    main_Class(String pin,String cardno){
         this.pin = pin;
+        this.cardno = cardno;
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icon/atm2.png"));
         Image i2 = i1.getImage().getScaledInstance(1380,685, Image.SCALE_DEFAULT);
@@ -84,30 +85,30 @@ public class main_Class extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==b1){
-            new Deposit(pin);
+            new Deposit(pin , cardno);
             setVisible(false);
         }else if (e.getSource()==b7){
             System.exit(0);  //to close code as set visible just hide
         } else if (e.getSource()==b2) {
-            new Withdrawl(pin);
+            new Withdrawl(pin , cardno);
             setVisible(false);
         } else if (e.getSource()==b6) {
-            new BalanceEnquriy(pin);
+            new BalanceEnquriy(pin , cardno);
             setVisible(false);
         } else if (e.getSource()==b3) {
-            new FastCash(pin);
+            new FastCash(pin , cardno);
             setVisible(false);
         } else if (e.getSource()==b5) {
-            new Pin(pin);
+            new Pin(pin , cardno);
             setVisible(false);
         } else if (e.getSource()==b4) {
-            new mini(pin);
+            new mini(pin , cardno);
         }
 
     }
 
     public static void main(String[] args) {
-        new main_Class("");
+        new main_Class("","");
 
     }
 
