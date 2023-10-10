@@ -1,0 +1,44 @@
+/*Bank Management System Java Project*/
+
+/*Basic database & tables required*/
+create database bankSystem;
+create table signup(form_no varchar(30), name varchar(30),father_name varchar(30), DOB varchar(30),gender varchar(30), email varchar(50), martial_status varchar(30), address varchar(60), city varchar(30), pincode varchar(30),state varchar(30));
+create table signuptwo(form_no varchar(30), religion varchar(30),category varchar(30), income varchar(30),education varchar(30), occupation varchar(50), PAN varchar(30), Adhaar varchar(60), Seniorcitizen varchar(30), Existing_acc varchar(30));
+create table signupthree(form_no varchar(30), account_type varchar(40),card_number varchar(30), pin varchar(30),facility varchar(200));
+create table login(form_no varchar(30),card_number varchar(50),pin varchar(30));
+create table bank(pin varchar(10), date varchar(50), type varchar(20),amount varchar(20),cardno varchar(50));
+
+/*View data in tables*/
+use bankSystem;
+
+Select* from signup;
+select*from signuptwo;
+select*from signupthree;
+select*from login;
+select* from bank;
+
+/*Danger to flush all data inside tables*/
+truncate signup;
+truncate signuptwo;
+truncate signupthree;
+truncate login;
+truncate bank;
+
+/*based on unique form no user details*/
+CREATE VIEW UserDetails AS
+SELECT s.form_no, s.name, s.DOB, s.email, st.account_type, l.card_number
+FROM signup s
+JOIN signupthree st ON s.form_no = st.form_no
+JOIN login l ON s.form_no = l.form_no;
+
+SELECT * FROM UserDetails;
+
+
+/*user personal data*/
+CREATE VIEW UserPersonalInfo AS
+SELECT s.form_no, s.name, l.card_number, st.Adhaar, st.PAN, s.address, s.DOB
+FROM signup s
+JOIN signuptwo st ON s.form_no = st.form_no
+JOIN login l ON s.form_no = l.form_no;
+
+SELECT * FROM UserPersonalInfo;
