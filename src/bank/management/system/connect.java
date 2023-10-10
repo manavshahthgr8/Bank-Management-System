@@ -8,8 +8,9 @@ import java.sql.Statement;
 //We will connect to MySQL with the help of JDBC
 //With the help of jar file all conection will b made
 public class connect {
+
     Connection connection;
-    Statement statement;
+    public Statement statement;
     public connect(){
         //Step 1 try catch //step 2 inner code after writing connection and statement
         try {
