@@ -14,8 +14,9 @@ use bankSystem;
 Select* from signup;
 select*from signuptwo;
 select*from signupthree;
-select*from login;
 select* from bank;
+select*from login;
+
 
 /*Danger to flush all data inside tables*/
 truncate signup;
@@ -59,3 +60,14 @@ LEFT JOIN signuptwo st ON s.form_no = st.form_no
 WHERE s.form_no NOT IN (SELECT form_no FROM signupthree);
 
 select*from unregistered;
+
+create table balance( cardno  varchar(20), balance varchar(20) );
+Select*from balance;
+
+CREATE VIEW balance_view AS
+SELECT s.form_no, s.name, l.card_number AS cardno, b.balance
+FROM signup s
+JOIN login l ON s.form_no = l.form_no
+JOIN balance b ON l.card_number = b.cardno;
+
+select*from balance_view;
