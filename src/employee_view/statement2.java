@@ -1,4 +1,5 @@
 package employee_view;
+
 import bank.management.system.connect;
 
 import javax.swing.*;
@@ -12,17 +13,20 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class balance extends JFrame implements ActionListener {
-    String admin;
-    JButton button1, button2, button3, button4 ;
-    JLabel timeLabel; // Added JLabel for displaying the time
-    Timer timer; // Added a timer to update the time label
+public class statement2  extends JFrame implements ActionListener {
     JTable dataTable;
     JScrollPane scrollPane;
+    String admin;
+    String input;
+    JButton button1, button2, button3, button4;
+    JLabel timeLabel; // Added JLabel for displaying the time
+    Timer timer; // Added a timer to update the time label
+    JLabel label1,label2;
 
-    balance(String admin) {
-        super("Manav's Bank admin - balance");
+    statement2(String admin , String input ){
+        super("Manav's Bank admin - statement");
         this.admin=admin;
+        this.input=input;
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icon/bank.png"));
         Image i2 = i1.getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
@@ -47,9 +51,9 @@ public class balance extends JFrame implements ActionListener {
         button2.addActionListener(this);
         add(button2);
 
-        button3 = new JButton("Statement");
+        button3 = new JButton("Balance");
         button3.setFont(new Font("Raleway",Font.BOLD, 14));
-        button3.setBackground(Color.yellow);
+        button3.setBackground(Color.YELLOW);
         button3.setForeground(Color.BLACK);
         button3.setBounds(800,15,150,20);
         button3.addActionListener(this);
@@ -64,8 +68,6 @@ public class balance extends JFrame implements ActionListener {
         button4.setBounds(1200, 15, 150, 20);
         button4.addActionListener(this);
         add(button4);
-
-
 
         // Create a JLabel for displaying the time
         timeLabel = new JLabel();
@@ -84,7 +86,18 @@ public class balance extends JFrame implements ActionListener {
         });
         timer.start(); // Start the timer
 
-        // ... (other code)
+        label1 = new JLabel("Total :");
+        label1.setForeground(Color.black);
+        label1.setFont(new Font("System", Font.BOLD, 16));
+        label1.setBounds(600,550,250,25);
+        add(label1);
+
+        label2 = new JLabel();
+        label2.setForeground(Color.black);
+        label2.setFont(new Font("System", Font.BOLD, 16));
+        label2.setBounds(680,550,270,25);
+        add(label2);
+
         // Create the table model to hold the data
         DefaultTableModel tableModel = new DefaultTableModel();
 
@@ -101,7 +114,7 @@ public class balance extends JFrame implements ActionListener {
             connect c = new connect();
             Connection connection = c.statement.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM balance_view");
+            ResultSet resultSet = statement.executeQuery("SELECT date,type,amount,cardno FROM bank where cardno= '"+input+"'");
 
             // Get column names from the ResultSet's metadata
             int columnCount = resultSet.getMetaData().getColumnCount();
@@ -121,14 +134,30 @@ public class balance extends JFrame implements ActionListener {
             e.printStackTrace();
         }
 
+
+
+        int balance=0;
+        try{
+            connect c = new connect();
+            ResultSet resultSet= c.statement.executeQuery("select balance from balance where cardno = '" + input + "' ");
+            while (resultSet.next()){
+                balance = Integer.parseInt(resultSet.getString("balance"));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        label2.setText(""+balance);
+
+
         getContentPane().setBackground(new Color(222, 255, 228));
         setLayout(null);
         setSize(1380, 725);
         setLocation(0, 0);
         setVisible(true);
-    }
 
-    // Method to update the time label with the current system time
+    }
     private void updateTimeLabel() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = dateFormat.format(new Date());
@@ -136,7 +165,7 @@ public class balance extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new balance("");
+        new statement2("","");
     }
 
     @Override
@@ -151,9 +180,9 @@ public class balance extends JFrame implements ActionListener {
             setVisible(false);
             new unregistered(admin);
 
-        } else if (e.getSource()==button3) {//staement1
+        } else if (e.getSource()==button3) {//balance
             setVisible(false);
-            new statement1(admin);
+            new balance(admin);
 
         } else if (e.getSource()==button4) {//logout
             try{

@@ -1,27 +1,25 @@
 package employee_view;
+
 import bank.management.system.connect;
+import bank.management.system.main_Class;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class balance extends JFrame implements ActionListener {
+public class statement1 extends JFrame implements ActionListener {
+    JLabel label;
+    JTextField textField;
     String admin;
-    JButton button1, button2, button3, button4 ;
+    JButton button1, button2, button3, button4,button5;
     JLabel timeLabel; // Added JLabel for displaying the time
     Timer timer; // Added a timer to update the time label
-    JTable dataTable;
-    JScrollPane scrollPane;
-
-    balance(String admin) {
-        super("Manav's Bank admin - balance");
+    statement1(String admin){
+        super("Manav's Bank admin - stmnt input");
         this.admin=admin;
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icon/bank.png"));
@@ -47,9 +45,9 @@ public class balance extends JFrame implements ActionListener {
         button2.addActionListener(this);
         add(button2);
 
-        button3 = new JButton("Statement");
+        button3 = new JButton("Balance");
         button3.setFont(new Font("Raleway",Font.BOLD, 14));
-        button3.setBackground(Color.yellow);
+        button3.setBackground(Color.YELLOW);
         button3.setForeground(Color.BLACK);
         button3.setBounds(800,15,150,20);
         button3.addActionListener(this);
@@ -64,6 +62,27 @@ public class balance extends JFrame implements ActionListener {
         button4.setBounds(1200, 15, 150, 20);
         button4.addActionListener(this);
         add(button4);
+
+        label = new JLabel("Enter cardno below :");
+        label.setForeground(Color.black); //text color
+        label.setFont(new Font("AvantGarde",Font.BOLD,38));
+        label.setBounds(500,250,450,40);
+        add(label);
+
+        textField = new JTextField(15);
+        textField.setBounds(450,300,450,30);
+        textField.setFont(new Font("Arial",Font.BOLD,14));
+        textField.setBackground(Color.BLACK);
+        textField.setForeground(Color.white);
+        add(textField);
+
+        button5 = new JButton("Next");
+        button5.setFont(new Font("Raleway", Font.BOLD, 14));
+        button5.setBackground(Color.GRAY);
+        button5.setForeground(Color.BLACK);
+        button5.setBounds(600, 380, 150, 20);
+        button5.addActionListener(this);
+        add(button5);
 
 
 
@@ -84,42 +103,6 @@ public class balance extends JFrame implements ActionListener {
         });
         timer.start(); // Start the timer
 
-        // ... (other code)
-        // Create the table model to hold the data
-        DefaultTableModel tableModel = new DefaultTableModel();
-
-        // Create the JTable using the table model
-        dataTable = new JTable(tableModel);
-
-        // Create a scroll pane and add the table to it
-        scrollPane = new JScrollPane(dataTable);
-        scrollPane.setBounds(100, 150, 1200, 400);
-        add(scrollPane);
-
-        // Populate the table with data from the SQL view
-        try {
-            connect c = new connect();
-            Connection connection = c.statement.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM balance_view");
-
-            // Get column names from the ResultSet's metadata
-            int columnCount = resultSet.getMetaData().getColumnCount();
-            for (int i = 1; i <= columnCount; i++) {
-                tableModel.addColumn(resultSet.getMetaData().getColumnName(i));
-            }
-
-            // Add rows to the table model
-            while (resultSet.next()) {
-                Object[] row = new Object[columnCount];
-                for (int i = 1; i <= columnCount; i++) {
-                    row[i - 1] = resultSet.getObject(i);
-                }
-                tableModel.addRow(row);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         getContentPane().setBackground(new Color(222, 255, 228));
         setLayout(null);
@@ -127,8 +110,6 @@ public class balance extends JFrame implements ActionListener {
         setLocation(0, 0);
         setVisible(true);
     }
-
-    // Method to update the time label with the current system time
     private void updateTimeLabel() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = dateFormat.format(new Date());
@@ -136,7 +117,8 @@ public class balance extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new balance("");
+        new statement1("");
+
     }
 
     @Override
@@ -151,9 +133,9 @@ public class balance extends JFrame implements ActionListener {
             setVisible(false);
             new unregistered(admin);
 
-        } else if (e.getSource()==button3) {//staement1
+        } else if (e.getSource()==button3) {//balance
             setVisible(false);
-            new statement1(admin);
+            new balance(admin);
 
         } else if (e.getSource()==button4) {//logout
             try{
@@ -164,7 +146,28 @@ public class balance extends JFrame implements ActionListener {
             }catch (Exception E){
                 E.printStackTrace();
             };
-        }
+        } else if(e.getSource()==button5){ //next
+            try {
+                String input = textField.getText();
+                if (textField.getText().equals("")) {   //if amount emptier than popping error
+                    JOptionPane.showMessageDialog(null, "Please enter the Cardno");
+                } else {
+                    //connect c = new connect();
+                    String q = "select * from login where card_number = '" + input + "'";
+                    ResultSet resultSet = c.statement.executeQuery(q);
+                    if(resultSet.next()){
+                        setVisible(false);
+                        new statement2(admin ,input);
+                    }else {
+                        JOptionPane.showMessageDialog(null,"User not found try again");
+                    }
+                }
 
+            }catch (Exception E){
+                E.printStackTrace();
+
+            }
+
+        }
     }
 }
