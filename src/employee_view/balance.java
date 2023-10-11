@@ -2,9 +2,13 @@ package employee_view;
 import bank.management.system.connect;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,6 +17,8 @@ public class balance extends JFrame implements ActionListener {
     JButton button1, button2, button3, button4;
     JLabel timeLabel; // Added JLabel for displaying the time
     Timer timer; // Added a timer to update the time label
+    JTable dataTable;
+    JScrollPane scrollPane;
 
     balance(String admin) {
         super("Manav's Bank admin - balance");
@@ -77,6 +83,41 @@ public class balance extends JFrame implements ActionListener {
         timer.start(); // Start the timer
 
         // ... (other code)
+        // Create the table model to hold the data
+        DefaultTableModel tableModel = new DefaultTableModel();
+
+        // Create the JTable using the table model
+        dataTable = new JTable(tableModel);
+
+        // Create a scroll pane and add the table to it
+        scrollPane = new JScrollPane(dataTable);
+        scrollPane.setBounds(100, 150, 1200, 400);
+        add(scrollPane);
+
+        // Populate the table with data from the SQL view
+        try {
+            connect c = new connect();
+            Connection connection = c.statement.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM balance_view");
+
+            // Get column names from the ResultSet's metadata
+            int columnCount = resultSet.getMetaData().getColumnCount();
+            for (int i = 1; i <= columnCount; i++) {
+                tableModel.addColumn(resultSet.getMetaData().getColumnName(i));
+            }
+
+            // Add rows to the table model
+            while (resultSet.next()) {
+                Object[] row = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    row[i - 1] = resultSet.getObject(i);
+                }
+                tableModel.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         getContentPane().setBackground(new Color(222, 255, 228));
         setLayout(null);

@@ -221,6 +221,7 @@ public class Signup3 extends JFrame implements ActionListener {
         } if (c6.isSelected()) {
             fac=fac+"E-Statement";
         }
+        int init = 0;
 
         try {
             if (e.getSource()==s){
@@ -230,8 +231,10 @@ public class Signup3 extends JFrame implements ActionListener {
                     connect c1 = new connect();
                     String q1 = "insert into signupthree values('"+formno+"', '"+atype+"','"+cardno+"','"+pin+"','"+fac+"')";
                     String q2 = "insert into login values('"+formno+"','"+cardno+"','"+pin+"')";
+                    String q3 = "insert into balance values('"+cardno+"','"+init+"')";
                     c1.statement.executeUpdate(q1);
                     c1.statement.executeUpdate(q2);
+                    c1.statement.executeUpdate(q3);
                     JOptionPane.showMessageDialog(null,"Card Number : "+cardno+"\n Pin : "+pin );
                     new Deposit(pin , cardno);
                     setVisible(false);

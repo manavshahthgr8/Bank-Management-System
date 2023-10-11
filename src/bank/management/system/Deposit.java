@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
 
 public class Deposit extends JFrame implements ActionListener {
@@ -64,6 +66,23 @@ public class Deposit extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null,"Please enter the Amount you want to Deposit");
                 }else {
                     connect c = new connect();
+                    ResultSet resultSet = c.statement.executeQuery("select * from bank where cardno = '" + cardno + "' and  pin = '" + pin + "'");
+                    int balance = 0;  // creating variable to fetch balance from database
+                    while (resultSet.next()) { //to check if data base se aya and store hua ki nahi
+                        if (resultSet.getString("type").equals("Deposit")) {  //column name match karenge
+                            balance += Integer.parseInt(resultSet.getString("amount"));
+                        } else {
+                            balance -= Integer.parseInt(resultSet.getString("amount"));
+                        }
+                    }
+
+                    balance = balance+Integer.parseInt(amount);
+                    String updateQuery = "UPDATE balance SET balance = ? WHERE cardno = ?";
+                    PreparedStatement preparedStatement = c.connection.prepareStatement(updateQuery);
+                    preparedStatement.setInt(1, balance);
+                    preparedStatement.setString(2, cardno);
+                    preparedStatement.executeUpdate();
+
                     c.statement.executeUpdate("insert into bank values('"+pin+"', '"+date+"','Deposit', '"+amount+"','"+cardno+"')");
                     JOptionPane.showMessageDialog(null,"Rs. "+amount+" Deposited Successfully");
                     setVisible(false);

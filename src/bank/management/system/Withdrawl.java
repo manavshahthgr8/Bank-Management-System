@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 
@@ -95,6 +96,14 @@ public class Withdrawl extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(null, "Insuffient Balance");
                         return;
                     }
+                    balance = balance-Integer.parseInt(amount);
+                    //c.statement.executeUpdate("update balance set balance = 0 where cardno=");
+                    String updateQuery = "UPDATE balance SET balance = ? WHERE cardno = ?";
+                    PreparedStatement preparedStatement = c.connection.prepareStatement(updateQuery);
+                    preparedStatement.setInt(1, balance);
+                    preparedStatement.setString(2, cardno);
+                    preparedStatement.executeUpdate();
+
 
                     c.statement.executeUpdate("insert into bank values('" + pin + "', '" + date + "', 'Withdrawl', '" + amount + "','"+cardno+"' )");
                     JOptionPane.showMessageDialog(null, "Rs. " + amount + " Debited Successfully");
