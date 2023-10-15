@@ -10,8 +10,9 @@ It replicates normal ATM banking, where user can login via pin & cardno after th
 Employee have acces to registered users, balance , statements , and even non registered users who only filled registeration form partially.
 
 ## Screenshots
+<img src = "https://github.com/manavshahthgr8/Bank-Management-System/blob/master/Readme-images/Screenshot%20(4).png" width="300" height="200"> <img src = "https://github.com/manavshahthgr8/Bank-Management-System/blob/master/Readme-images/Screenshot%20(5).png" width="300" height="200">
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<img src = "https://github.com/manavshahthgr8/Bank-Management-System/blob/master/Readme-images/Screenshot%20(6).png" width="300" height="200"> <img src = "https://github.com/manavshahthgr8/Bank-Management-System/blob/master/Readme-images/Screenshot%20(7).png" width="300" height="200">
 
 
 ## Tech Stack
